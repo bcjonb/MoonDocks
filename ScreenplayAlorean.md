@@ -66,7 +66,7 @@
 
 # Alorean Groups
 
-# The Royal Fighter Legion
+## The Royal Fighter Legion
 
 >  Lead by a Royal Prince/ss, this elite battalion of pilots use their **Strikers**
   to bring hell to the United Rebel Alliance or anyone else that endangers the

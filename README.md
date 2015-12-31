@@ -1,5 +1,5 @@
 # MoonDocks
-A Space Adventure Game **By Jonathan Braun And Brandon Crooks.**
+A Space Adventure Game **By Jonathan Braun** and **Brandon Crooks.**
 
 ### What is MoonDocks?
 To be Determined...

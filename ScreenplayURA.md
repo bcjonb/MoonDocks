@@ -1,3 +1,0 @@
-# United Rebel Alliance
-
-##

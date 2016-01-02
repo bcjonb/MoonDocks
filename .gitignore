@@ -3,3 +3,4 @@
 *.swo
 ref/
 MoonDocks.wiki
+__pycache__

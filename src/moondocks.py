@@ -15,8 +15,17 @@ Game start
 
     """
 
+  ############################################
+  # Game Commands
+  ############################################
   def do_exit(self, line):
     return True
+
+  def do_restart(self, line):
+    """docstring for do_restart"""
+    print('Restarting the game…')
+    print('Are you sure? [y/n]: ')
+    # TODO: Make restart actually do something…
 
   def postloop(self):
     print("Thanks for playing!")
@@ -78,4 +87,5 @@ if __name__ == '__main__':
   # game.levelUp()
   # Start gameloop
   MoonDocks().cmdloop()
+  # do final cleanup if necesarry
   input("\n\nPress Enter to exit")

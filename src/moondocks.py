@@ -74,12 +74,12 @@ class Game(object):
                 print(self.player.__str__())
                 main = False
             elif choice == 2:
-                if not os.path.exists("SavedGames/"):
+                if not os.path.exists("savedGames/"):
                     print("Sorry, no players saved.")
                 else:
-                    print("SavedGames exists:\n")
+                    print("savedGames exists:\n")
                     f = []
-                    for (dirpath, dirnames, filenames) in walk("SavedGames/"):
+                    for (dirpath, dirnames, filenames) in walk("savedGames/"):
                         f.extend(filenames)
                         break
                     print(f)
@@ -96,9 +96,9 @@ class Game(object):
             if self.player.exp >1000000:
                 main = False
     def saveGame(self):
-        if not os.path.exists("SavedGames/"):
-            os.makedirs("SavedGames/")
-        path = "SavedGames/" + str(Game.player.name) + ".txt"
+        if not os.path.exists("savedGames/"):
+            os.makedirs("savedGames/")
+        path = "savedGames/" + str(Game.player.name) + ".txt"
         saveFile = open(path, "w+")
         saveFile.write(Game.player.saveString())
         saveFile.close()

@@ -9,6 +9,7 @@ class MoonDocks(cmd.Cmd):
 
   def __init__(self):
     cmd.Cmd.__init__(self)
+    self.prompt('What would you like to do? ')
     self.intro = """
 
 Game start
@@ -19,6 +20,7 @@ Game start
   # Game Commands
   ############################################
   def do_exit(self, line):
+    """Exits game to main menu"""
     return True
 
   def do_restart(self, line):
@@ -28,7 +30,7 @@ Game start
     # TODO: Make restart actually do something…
 
   def postloop(self):
-    print("Thanks for playing!")
+    print("Exiting to main menu")
 
 class Game(object):
     player = None
@@ -87,5 +89,7 @@ if __name__ == '__main__':
   # game.levelUp()
   # Start gameloop
   MoonDocks().cmdloop()
+  # Display Main Menu
+  game.display_instruct()
   # do final cleanup if necesarry
   input("\n\nPress Enter to exit")

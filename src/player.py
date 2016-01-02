@@ -37,6 +37,10 @@ class Player(object):
         toStr = "Player Name:" + self.name + "\nAffiliation: " + self.affiliation + "\nSpecies: " + self.species + "\nRank: " + str(self.rank)
         return toStr
 
+    def saveString(self):
+        toStr = self.name + "\n" + self.affiliation + "\n" + self.species + "\n" + str(self.exp)
+        return toStr
+
     def setName(self):
         usrName = input("\nWhat is your name?: ")
         self.name = usrName

@@ -5,19 +5,25 @@ import os
 
 os.system('cls')
 os.system('clear')
+
 class Player(object):
     """ A MoonDocks Player """
     AFFILIATIONS = ["Alorean Empire", "United Rebel Alliance"]
     SPECIES = ["Alorean", "Crilac", "Flian", "Cyborg", "Droid"]
 
+    RANKSCIVILION = ["Civilian", "Known", "Popular", "Famous", "Reknowned", "Trusted", "Emporer's Servent", "Emperor's Consort", "Emporer's Concubine", "Emperor's Main Concubine"]
+    RANKSMILITARY = ["Crewman", "Petty Officer", "Chief Petty Officer", "Master Chief Petty Officer", "Chief Warrent Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Commander", "Captian"]
+    RANKSREBELS = ["Crewman", "Petty Officer", "Chief Petty Officer", "Master Chief Petty Officer", "Chief Warrent Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Commander", "Captian"]
+
     def __init__(self):
         self.name = ""
         self.affiliation = ""
         self.species = ""
-        self.rank = 0
+        self.rank = "Unknown"
+        self.exp = 0
 
     def __str__(self):
-        toStr = self.name + ":\nAffiliation: " + self.affiliation + "\nSpecies: " + self.species + "\nRank: " + str(self.rank)
+        toStr = "Player Name:" + self.name + "\nAffiliation: " + self.affiliation + "\nSpecies: " + self.species + "\nRank: " + str(self.rank)
         return toStr
 
     def setName(self):
@@ -29,8 +35,8 @@ class Player(object):
         ---------------------------------------------------------------------
         | Affiliations:
         |
-        | 1) {0}
-        | 2) {1}
+        | 1) {}
+        | 2) {}
         ---------------------------------------------------------------------
         """.format(self.AFFILIATIONS[0], self.AFFILIATIONS[1])
         print(aff)
@@ -43,11 +49,11 @@ class Player(object):
         ---------------------------------------------------------------------
         | Species of the Alorean Empire:
         |
-        | 1) {0} (Human species)
-        | 2) {1} (Reptilian species)
-        | 3) {2} (Insectoid slave species)
-        | 4) {3} (Reanimated empiric cyborgs)
-        | 5) {4} (Mastered AI offspring of the cyborgs)
+        | 1) {} (Human species)
+        | 2) {} (Reptilian species)
+        | 3) {} (Insectoid slave species)
+        | 4) {} (Reanimated empiric cyborgs)
+        | 5) {} (Mastered AI offspring of the cyborgs)
         | 6) I believe in fate, have destiny choose.
         ---------------------------------------------------------------------
             """.format(self.SPECIES[0], self.SPECIES[1], self.SPECIES[2], self.SPECIES[3], self.SPECIES[4])
@@ -84,8 +90,108 @@ class Player(object):
                     self.species = self.SPECIES[int(n)-1]
                 elif int(n) <= 3:
                     self.species = self.SPECIES[int(n)]
+    def rankUp(self):
+        exp = self.exp
+        #==================================================Level 0
+        if exp < 100:
+            self.rank = "Unknown"
+        #==================================================Level 1
+        if exp > 100 and exp < 250:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[0]
+                else:
+                    self.rank = self.RANKSMILITARY[0]
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[0]
+        #==================================================Level 2
+        elif exp > 250 and exp < 625:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[1] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[1] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[1] #Change
+        #==================================================Level 3
+        elif exp > 625 and exp < 1550:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[2] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[2] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[2] #Change
+        #==================================================Level 4
+        elif exp > 1550 and exp < 3875:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[3] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[3] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[3] #Change
+        #==================================================Level 5
+        elif exp > 3875 and exp < 9700:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[4] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[4] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[4] #Change
+        #==================================================Level 6
+        elif exp > 9700 and exp < 24250:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[5] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[5] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[5] #Change
+        #==================================================Level 7
+        elif exp > 24250 and exp < 60625:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[6] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[6] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[6] #Change
+        #==================================================Level 8
+        elif exp > 60625 and exp < 151550:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[7] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[7] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[7] #Change
+        #==================================================Level 9
+        elif exp > 151550 and exp < 378875:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[8] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[8] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[8] #Change
+        #==================================================Level 10
+        elif exp > 378875 and exp <= 1000000:
+            if self.affiliation == self.AFFILIATIONS[0]:
+                if self. species == self.SPECIES[2]:
+                    self.rank = self.RANKSCIVILION[9] #Change
+                else:
+                    self.rank = self.RANKSMILITARY[9] #Change
+            if self.affiliation == self.AFFILIATIONS[1]:
+                self.rank = self.RANKSREBELS[9] #Change
+        #==========================================================
+    def setExp(self):
+        value = input("\nSet exp to?: Enter Value between 0 and 1000000: ")
+        self.exp = int(value)
 
 class Game(object):
+    player = None
     def display_instruct(self):
         """Display Game Instructions"""
         main = True
@@ -113,11 +219,11 @@ class Game(object):
             print(menu)
             choice = int(input("What would you like to do?: "))
             if choice == 1:
-                player = Player()
-                player.setName()
-                player.setAffiliation()
-                player.setSpecies()
-                print(player.__str__())
+                self.player = Player()
+                self.player.setName()
+                self.player.setAffiliation()
+                self.player.setSpecies()
+                print(self.player.__str__())
                 main = False
             elif choice == 2:
                 print("Sorry, no players saved.")
@@ -125,16 +231,19 @@ class Game(object):
                 print("Help coming soon.")
             elif choice == 4:
                 quit()
+    def levelUp(self):
+        main = True
+        while main:
+            self.player.setExp()
+            self.player.rankUp()
+            print("\n"+ self.player.__str__())
+            if self.player.exp >1000000:
+                main = False
 
-def createPlayer():
-    print("\t\tWelcome to Create Player")
-    name = input("What is your Name?: ")
-    print("Hello " + name + "\n")
-    affiliation = input("What Affiliation would you like to join?: ")
-    species = input("\nAnd what species are you?: ")
-    final_player = Player(name, affiliation, species)
-    print(final_player.__str__() + " Created.")
 
 game = Game()
 game.display_instruct()
+game.levelUp()
+
+
 input("\n\nPress Enter to exit")

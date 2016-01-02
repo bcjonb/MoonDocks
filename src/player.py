@@ -11,9 +11,20 @@ class Player(object):
     AFFILIATIONS = ["Alorean Empire", "United Rebel Alliance"]
     SPECIES = ["Alorean", "Crilac", "Flian", "Cyborg", "Droid"]
 
-    RANKSCIVILION = ["Civilian", "Known", "Popular", "Famous", "Reknowned", "Trusted", "Emporer's Servent", "Emperor's Consort", "Emporer's Concubine", "Emperor's Main Concubine"]
-    RANKSMILITARY = ["Crewman", "Petty Officer", "Chief Petty Officer", "Master Chief Petty Officer", "Chief Warrent Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Commander", "Captian"]
-    RANKSREBELS = ["Crewman", "Petty Officer", "Chief Petty Officer", "Master Chief Petty Officer", "Chief Warrent Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Commander", "Captian"]
+    RANKSCIVILION = ["Civilian", "Known", "Popular", "Famous", "Reknowned",
+                     "Trusted", "Emporer's Servent", "Emperor's Consort",
+                     "Emporer's Concubine", "Emperor's Main Concubine"]
+    RANKSMILITARY = ["Crewman", "Petty Officer", "Chief Petty Officer",
+                     "Master Chief Petty Officer", "Chief Warrent Officer",
+                     "Ensign", "Lieutenant", "Lieutenant Commander",
+                     "Commander", "Captian"]
+    RANKSREBELS = ["Crewman", "Petty Officer", "Chief Petty Officer",
+                    "Master Chief Petty Officer", "Chief Warrent Officer",
+                    "Ensign", "Lieutenant", "Lieutenant Commander",
+                    "Commander", "Captian"]
+    #RANKSREBELS = ["Private", "Corporal", "Sergeant", "Sergeant Major",
+                    #"Chief Warrent Officer",  "Lieutenant", "Captain",
+                    #"Major", "Lieutenant Colonel", "Colonel", "General"]
 
     def __init__(self):
         self.name = ""
@@ -226,7 +237,13 @@ class Game(object):
                 print(self.player.__str__())
                 main = False
             elif choice == 2:
-                print("Sorry, no players saved.")
+                print(
+                """
+                ----------------------------
+                | Sorry, no players saved. |
+                ----------------------------
+                """
+                )
             elif choice == 3:
                 print("Help coming soon.")
             elif choice == 4:

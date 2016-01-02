@@ -3,6 +3,8 @@
 
 import cmd
 from player import *
+import os
+from os import walk
 
 class MoonDocks(cmd.Cmd):
   """MoonDocks"""
@@ -27,11 +29,16 @@ Game start
     print('Are you sure? [y/n]: ')
     # TODO: Make restart actually do something…
 
+  def do_save(self, line):
+      Game.saveGame(self)
+      print("Game Save.")
+
   def postloop(self):
     print("Thanks for playing!")
 
 class Game(object):
     player = None
+
     def display_instruct(self):
         """Display Game Instructions"""
         main = True
@@ -63,10 +70,19 @@ class Game(object):
                 self.player.setName()
                 self.player.setAffiliation()
                 self.player.setSpecies()
+                Game.player = self.player
                 print(self.player.__str__())
                 main = False
             elif choice == 2:
-                print("Sorry, no players saved.")
+                if not os.path.exists("SavedGames/"):
+                    print("Sorry, no players saved.")
+                else:
+                    print("SavedGames exists:\n")
+                    f = []
+                    for (dirpath, dirnames, filenames) in walk("SavedGames/"):
+                        f.extend(filenames)
+                        break
+                    print(f)
             elif choice == 3:
                 print("Help coming soon.")
             elif choice == 4:
@@ -79,10 +95,18 @@ class Game(object):
             print("\n"+ self.player.__str__())
             if self.player.exp >1000000:
                 main = False
+    def saveGame(self):
+        if not os.path.exists("SavedGames/"):
+            os.makedirs("SavedGames/")
+        path = "SavedGames/" + str(Game.player.name) + ".txt"
+        saveFile = open(path, "w+")
+        saveFile.write(Game.player.saveString())
+        saveFile.close()
 
 if __name__ == '__main__':
   game = Game()
   game.display_instruct()
+  #print(game.player)
   # Stop mr. Brauns FUCK YOU loop
   # game.levelUp()
   # Start gameloop

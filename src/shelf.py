@@ -19,7 +19,7 @@ args = parser.parse_args()
  
 #################################
 # This writes/opens a db file.
-# *note: the .db prefix is added
+# *note: the .db postfix is added
 # automatically.
 #################################
 s = shelve.open('test_shelf')

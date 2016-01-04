@@ -11,16 +11,27 @@ class MoonDocks(cmd.Cmd):
 
   def __init__(self):
     cmd.Cmd.__init__(self)
-    self.prompt('What would you like to do? ')
+    self.prompt = 'What would you like to do? '
     self.intro = """
 
 Game start
 
     """
+  ############################################
+  # Ingame Commands
+  # - NORTH:
+  # - SOUTH:
+  # - EAST:
+  # - WEST:
+  ############################################
 
   ############################################
-  # Game Commands
+  # Core Commands
+  # - EXIT:
+  # - RESTART:
+  # - SAVE:
   ############################################
+
   def do_exit(self, line):
     """Exits game to main menu"""
     return True
@@ -32,16 +43,20 @@ Game start
     # TODO: Make restart actually do something…
 
   def do_save(self, line):
-      Game.saveGame(self)
+      MainMenu.saveGame(self)
       print("Game Save.")
+
+  ############################################
+  # Cmd Module stuff
+  ############################################
 
   def postloop(self):
     print("Exiting to main menu")
 
-class Game(object):
+class MainMenu(object):
     player = None
 
-    def display_instruct(self):
+    def display_menu(self):
         """Display Game Instructions"""
         main = True
 
@@ -72,7 +87,7 @@ class Game(object):
                 self.player.setName()
                 self.player.setAffiliation()
                 self.player.setSpecies()
-                Game.player = self.player
+                MainMenu.player = self.player
                 print(self.player.__str__())
                 main = False
             elif choice == 2:
@@ -100,20 +115,20 @@ class Game(object):
     def saveGame(self):
         if not os.path.exists("savedGames/"):
             os.makedirs("savedGames/")
-        path = "savedGames/" + str(Game.player.name) + ".txt"
+        path = "savedGames/" + str(MainMenu.player.name) + ".txt"
         saveFile = open(path, "w+")
-        saveFile.write(Game.player.saveString())
+        saveFile.write(MainMenu.player.saveString())
         saveFile.close()
 
 if __name__ == '__main__':
-  game = Game()
-  game.display_instruct()
+  mainmenu = MainMenu()
+  mainmenu.display_menu()
   #print(game.player)
   # Stop mr. Brauns FUCK YOU loop
   # game.levelUp()
   # Start gameloop
   MoonDocks().cmdloop()
   # Display Main Menu
-  game.display_instruct()
+  mainmenu.display_menu()
   # do final cleanup if necesarry
   input("\n\nPress Enter to exit")

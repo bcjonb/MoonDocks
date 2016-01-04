@@ -4,9 +4,9 @@
 import argparse
 import shelve
 
-#################################
-# Console stuff, ignore
-#################################
+#####################################
+# Console stuff; ignore
+#####################################
 parser = argparse.ArgumentParser()
 parser.add_argument('-w', '--write', help='Writes data to disk',
                     action='store_true',
@@ -16,29 +16,32 @@ parser.add_argument('-r', '--read', help='Reads data from disk',
                     default=False)
 args = parser.parse_args()
 
-#################################
-# This writes/opens a db file.
-# *note: the .db postfix is added
-# automatically.
-#################################
-s = shelve.open('test_shelf')
+#####################################
+# This creates or opens the
+# 'game.db' file.
+#####################################
+playerDB = shelve.open('db/player.db')
 
 if args.write: # ignore this
   print('WRITING!') # this
-  #################################
+  #####################################
   # This writs to the db file.
-  #################################
+  #####################################
   try:
-    s['key1'] = { 'name' : 'Brandon', 'race' : 'human' }
+    playerDB['profile1'] = {
+      'name' : 'Brandon',
+      'affiliation' : 'Alorean Empire',
+      'species': 'Alorean'
+    }
   finally:
-    s.close()
+    playerDB.close()
 if args.read: # this...
   print('READING!') # and this
-  #################################
+  #####################################
   # This reads from the db file.
-  #################################
+  #####################################
   try:
-    existing = s['key1']
+    player = playerDB['profile1']
   finally:
-    s.close()
-  print(existing)
+    playerDB.close()
+  print(player)

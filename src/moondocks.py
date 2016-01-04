@@ -11,35 +11,38 @@ class MoonDocks(cmd.Cmd):
 
   def __init__(self):
     cmd.Cmd.__init__(self)
+    # TODO: add custom banners
     self.prompt = 'What would you like to do? '
     self.intro = """
 
 Game start
 
     """
-  ############################################
-  # Ingame Commands
+  ################################################
+  # Player Commands
   # - NORTH:
   # - SOUTH:
   # - EAST:
   # - WEST:
-  ############################################
+  ################################################
 
-  ############################################
-  # Core Commands
-  # - EXIT:
-  # - RESTART:
-  # - SAVE:
-  ############################################
+  ################################################
+  # Core Game Commands
+  # - EXIT:    Exits the game to the main menu.
+  # - RESTART: Restarts the game.
+  # - SAVE:    Saves the current game state.
+  ################################################
 
   def do_exit(self, line):
-    """Exits game to main menu"""
+    """Exits game to the main menu"""
+    os.system('cls')
+    os.system('clear')
     return True
 
   def do_restart(self, line):
     """docstring for do_restart"""
+    print('Are you sure? This cannot be undone [y/n]: ')
     print('Restarting the game…')
-    print('Are you sure? [y/n]: ')
     # TODO: Make restart actually do something…
 
   def do_save(self, line):

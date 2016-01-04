@@ -11,24 +11,39 @@ class MoonDocks(cmd.Cmd):
 
   def __init__(self):
     cmd.Cmd.__init__(self)
-    self.prompt('What would you like to do? ')
+    # TODO: add custom banners
+    self.prompt = 'What would you like to do? '
     self.intro = """
 
 Game start
 
     """
 
-  ############################################
-  # Game Commands
-  ############################################
+  ################################################
+  # Player Commands
+  # - NORTH:
+  # - SOUTH:
+  # - EAST:
+  # - WEST:
+  ################################################
+
+  ################################################
+  # Core Game Commands
+  # - EXIT:    Exits the game to the main menu.
+  # - RESTART: Restarts the game.
+  # - SAVE:    Saves the current game state.
+  ################################################
+
   def do_exit(self, line):
-    """Exits game to main menu"""
+    """Exits game to the main menu"""
+    os.system('cls')
+    os.system('clear')
     return True
 
   def do_restart(self, line):
     """docstring for do_restart"""
+    print('Are you sure? This cannot be undone [y/n]: ')
     print('Restarting the game…')
-    print('Are you sure? [y/n]: ')
     # TODO: Make restart actually do something…
 
   def do_save(self, line):
@@ -106,14 +121,12 @@ class Game(object):
         saveFile.close()
 
 if __name__ == '__main__':
+  # Start the main menu
   game = Game()
   game.display_instruct()
-  #print(game.player)
-  # Stop mr. Brauns FUCK YOU loop
-  # game.levelUp()
   # Start gameloop
   MoonDocks().cmdloop()
   # Display Main Menu
   game.display_instruct()
-  # do final cleanup if necesarry
+  # Do final cleanup if necesarry
   input("\n\nPress Enter to exit")

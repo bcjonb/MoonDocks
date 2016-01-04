@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
- 
+
 import argparse
 import shelve
-import sys
- 
+
 #################################
 # Console stuff, ignore
 #################################
@@ -16,14 +15,14 @@ parser.add_argument('-r', '--read', help='Reads data from disk',
                     action='store_true',
                     default=False)
 args = parser.parse_args()
- 
+
 #################################
 # This writes/opens a db file.
 # *note: the .db postfix is added
 # automatically.
 #################################
 s = shelve.open('test_shelf')
- 
+
 if args.write: # ignore this
   print('WRITING!') # this
   #################################

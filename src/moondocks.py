@@ -6,55 +6,6 @@ from player import *
 import os, traceback
 import shelve
 
-class MoonDocks(cmd.Cmd):
-  """MoonDocks"""
-
-  def __init__(self):
-    cmd.Cmd.__init__(self)
-    # TODO: add custom banners
-    self.prompt = 'What would you like to do? '
-    self.intro = """
-
-Game start
-
-    """
-  ################################################
-  # Player Commands
-  # - NORTH:
-  # - SOUTH:
-  # - EAST:
-  # - WEST:
-  ################################################
-
-  ################################################
-  # Core Game Commands
-  # - EXIT:    Exits the game to the main menu.
-  # - RESTART: Restarts the game.
-  # - SAVE:    Saves the current game state.
-  ################################################
-
-  def do_exit(self, line):
-    """Exits game to the main menu"""
-    os.system('cls')
-    os.system('clear')
-    return True
-
-  def do_restart(self, line):
-    """docstring for do_restart"""
-    print('Are you sure? This cannot be undone [y/n]: ')
-    print('Restarting the game…')
-    # TODO: Make restart actually do something…
-
-  def do_save(self, line):
-    MainMenu.saveGame(self)
-    print("Game Saved.")
-
-  ############################################
-  # Cmd Module stuff
-  ############################################
-
-  def postloop(self):
-    print("Exiting to main menu")
 
 class MainMenu(object):
   player = None
@@ -142,6 +93,64 @@ class MainMenu(object):
       print('-'*60)
     finally:
       playerDB.close()
+
+############################################
+# Game Loop
+############################################
+
+class MoonDocks(cmd.Cmd):
+  """MoonDocks"""
+
+  def __init__(self):
+    cmd.Cmd.__init__(self)
+    # TODO: add custom banners
+    self.prompt = 'What would you like to do? '
+    self.intro = """
+
+Game start
+
+    """
+  ################################################
+  # Player Commands
+  # - NORTH:
+  # - SOUTH:
+  # - EAST:
+  # - WEST:
+  ################################################
+
+  ################################################
+  # Core Game Commands
+  # - EXIT:    Exits the game to the main menu.
+  # - RESTART: Restarts the game.
+  # - SAVE:    Saves the current game state.
+  ################################################
+
+  def do_exit(self, line):
+    """Exits game to the main menu"""
+    os.system('cls')
+    os.system('clear')
+    return True
+
+  def do_restart(self, line):
+    """docstring for do_restart"""
+    print('Are you sure? This cannot be undone [y/n]: ')
+    print('Restarting the game…')
+    # TODO: Make restart actually do something…
+
+  def do_save(self, line):
+    MainMenu.saveGame(self)
+    print("Game Saved.")
+
+  ############################################
+  # Cmd Module stuff
+  ############################################
+
+  def postloop(self):
+    print("Exiting to main menu")
+
+############################################
+# INIT, woot!
+############################################
 
 if __name__ == '__main__':
   mm = MainMenu()

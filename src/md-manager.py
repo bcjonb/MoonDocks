@@ -3,18 +3,12 @@
 
 import cmd
 import os
-import shelve
+# import shelve
 
 class MDManager(cmd.Cmd, object):
 
-  baseDir = './'
-  dbPath = baseDir + 'db'
-  dbList = []
-  currentDB = None
-  database = None
-  mdPrompt = 'MoonDocks db Manager: %s ❯ ' % (currentDB)
-  prompt = mdPrompt
-
+  prompt = 'Moondocks db Manager: %s ❯ '.format(
+    purple='\033[95m', nc='\033[0m')
   def __init__(self):
     cmd.Cmd.__init__(self)
     self.ruler = '-'
@@ -26,8 +20,9 @@ class MDManager(cmd.Cmd, object):
     - {purple}open{nc}:   Opens a database
     - {purple}close{nc}:  Closes the current database
     - {purple}list{nc}:   Lists available databases
-    - {purple}switch{nc}: Switches to a new database
+    - {purple}create{nc}: Creates a new database
     - {purple}show{nc}:   Show the contents of a database
+    - {purple}insert{nc}: Insert's data into the database
     - {purple}help{nc}:   Get help for a command
 
     *Note: Use tab to autocomplete commands.
@@ -36,34 +31,19 @@ class MDManager(cmd.Cmd, object):
 
   ## Database commands
 
-  def do_open(self, args):
-    '''Opens a database'''
+  ## Core commands
 
-    if not MDManager.closeDB():
-      return
-    elif (args == '' or args == ' '):
-      opendb = input('\nWhich database would you like to open?: ')
-      if opendb != '' or opendb != ' ':
-        MDManager.currentDB = opendb
-      return
-    else:
-      print(' Opening db: %s ' % (args))
-      MDManager.currentDB = args
-
-  def do_close(self, args):
-    '''Close the current database'''
-    MDManager.closeDB()
-
-  def do_list(self, args):
-    '''Show available databases'''
-    print('Listing databases:')
-    index = 0
+  def updatedbCache():
+    '''Update the list of available db'''
+    MDManager.dbCache = []
     for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
-      # print path to all subdirectories first.
-      # for subdirname in dirnames:
-      #   print(os.path.join(dirname, subdirname))
+      for filename in filenames:
+        MDManager.dbCache.append(filename)
 
-      # print path to all filenames.
+  def listdb():
+    """List db"""
+    _index = 0
+    for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
       print('└── ' + os.path.basename(dirname))
       for filename in filenames:
         print('   └── '
@@ -71,48 +51,13 @@ class MDManager(cmd.Cmd, object):
               + os.path.join(filename)
               + '\033[0m'
               )
-        index += 1
+        _index += 1
       print('''
-Available database(s): {0}{1}{2} '''.format('\033[95m', index, '\033[0m'))
-      MDManager.updatedbList()
-
-  def do_show(self, args):
-    """Show the contents of a database"""
-    print('Yeahp, it\'s in here')
-
-  ## Core commands
-
-  def updatedbList():
-    '''Update the list of available db'''
-    MDManager.dbList = []
-    for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
-      for filename in filenames:
-        MDManager.dbList.append(filename)
-
-  def closeDB():
-    '''Close an open database'''
-    if MDManager.currentDB is not None:
-      print(' The database: %s is open. ' % (MDManager.currentDB))
-      # Prompt before closing
-      askClose = input('\nWould you like to close it now? [y/n]: ').lower()
-      if askClose == 'y':
-        print('Closing the database...')
-        # TODO: shelve close db
-        MDManager.currentDB = None
-        # db closed
-        return True
-      else:
-        # db open
-        return False
-    else:
-      # No db open
-      return True
+Available database(s): {0}{1}{2} '''.format('\033[95m', _index, '\033[0m'))
 
   def do_exit(self, args):
     '''Exit MoonDocks db Manager'''
-    if MDManager.closeDB():
-      return -1
-    return
+    return -1
 
   def do_EOF(self, args):
     '''Exit on system EOF character'''
@@ -133,10 +78,17 @@ Available database(s): {0}{1}{2} '''.format('\033[95m', index, '\033[0m'))
   # Override Cmd object methods
   #################################################
 
+  def precmd(self, line):
+    """Pre command processing"""
+    MDManager.updatedbCache()
+    return line
+
   def postcmd(self, stop, line):
     '''Post command processing'''
     print('') # adds an empty space
-    MDManager.prompt = 'MoonDocks db Manager: %s ❯ ' % (MDManager.currentDB)
+    print('current db: ' + MDManager.database)
+    MDManager.prompt = 'MoonDocks db Manager: {0}{1}{2} ❯ '.format(
+          '\033[95m', MDManager.currentDB(), '\033[0m')
     return stop
 
   def preloop(self):
@@ -149,6 +101,7 @@ Available database(s): {0}{1}{2} '''.format('\033[95m', index, '\033[0m'))
   def postloop(self):
     '''Do any necessary cleanup.'''
     cmd.Cmd.postloop(self)
+    os.system('clear')
     print('Closing MoonDocks db Manager...')
 
 

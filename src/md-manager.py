@@ -3,12 +3,15 @@
 
 import cmd
 import os
+import shelve
 
 class MDManager(cmd.Cmd, object):
 
   baseDir = './'
   dbPath = baseDir + 'db'
+  dbList = []
   currentDB = None
+  database = None
   mdPrompt = 'MoonDocks db Manager: %s ❯ ' % (currentDB)
   prompt = mdPrompt
 
@@ -71,12 +74,20 @@ class MDManager(cmd.Cmd, object):
         index += 1
       print('''
 Available database(s): {0}{1}{2} '''.format('\033[95m', index, '\033[0m'))
+      MDManager.updatedbList()
 
   def do_show(self, args):
     """Show the contents of a database"""
     print('Yeahp, it\'s in here')
 
   ## Core commands
+
+  def updatedbList():
+    '''Update the list of available db'''
+    MDManager.dbList = []
+    for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
+      for filename in filenames:
+        MDManager.dbList.append(filename)
 
   def closeDB():
     '''Close an open database'''

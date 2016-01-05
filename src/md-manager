@@ -44,12 +44,33 @@ class MDManager(cmd.Cmd, object):
         MDManager.currentDB = opendb
       return
     else:
-      print('  Opening db: %s ' % (args))
+      print(' Opening db: %s ' % (args))
       MDManager.currentDB = args
 
   def do_close(self, args):
     '''Close the current database'''
     MDManager.closeDB()
+
+  def do_list(self, args):
+    '''Show available databases'''
+    print('Listing databases:')
+    index = 0
+    for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
+      # print path to all subdirectories first.
+      # for subdirname in dirnames:
+      #   print(os.path.join(dirname, subdirname))
+
+      # print path to all filenames.
+      print('└── ' + os.path.basename(dirname))
+      for filename in filenames:
+        print('   └── '
+              + '\033[95m'
+              + os.path.join(filename)
+              + '\033[0m'
+              )
+        index += 1
+      print('''
+Available database(s): {0}{1}{2} '''.format('\033[95m', index, '\033[0m'))
 
   def do_show(self, args):
     """Show the contents of a database"""
@@ -60,11 +81,11 @@ class MDManager(cmd.Cmd, object):
   def closeDB():
     '''Close an open database'''
     if MDManager.currentDB is not None:
-      print('  The database: %s is open. ' % (MDManager.currentDB))
+      print(' The database: %s is open. ' % (MDManager.currentDB))
       # Prompt before closing
       askClose = input('\nWould you like to close it now? [y/n]: ').lower()
       if askClose == 'y':
-        print('  Closing the database...')
+        print('Closing the database...')
         # TODO: shelve close db
         MDManager.currentDB = None
         # db closed
@@ -117,10 +138,10 @@ class MDManager(cmd.Cmd, object):
   def postloop(self):
     '''Do any necessary cleanup.'''
     cmd.Cmd.postloop(self)
-    print('  Closing MoonDocks db Manager...')
+    print('Closing MoonDocks db Manager...')
 
 
 if __name__ == '__main__':
-  mdmanager = MDManager()
   os.system('clear')
+  mdmanager = MDManager()
   mdmanager.cmdloop()

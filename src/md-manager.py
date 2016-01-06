@@ -7,8 +7,16 @@ import os
 
 class MDManager(cmd.Cmd, object):
 
-  prompt = 'Moondocks db Manager: %s ❯ '.format(
-    purple='\033[95m', nc='\033[0m')
+  # Colorize
+  purple='\033[95m'
+  gray='\033[1;30m'
+  nc='\033[0m'
+
+  dbCache = []
+  dbDir = './db/'
+  prompt = '''{gray}Moondocks db Manager: {purple}{db}{nc}
+❯ '''.format(purple=purple, gray=gray, nc=nc, db=None)
+
   def __init__(self):
     cmd.Cmd.__init__(self)
     self.ruler = '-'
@@ -27,7 +35,7 @@ class MDManager(cmd.Cmd, object):
 
     *Note: Use tab to autocomplete commands.
 
-    '''.format(purple='\033[95m', nc='\033[0m')
+    '''.format(purple=MDManager.purple, nc=MDManager.nc)
 
   ## Database commands
 
@@ -39,6 +47,10 @@ class MDManager(cmd.Cmd, object):
     for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
       for filename in filenames:
         MDManager.dbCache.append(filename)
+
+  def opendb():
+    """Open a database"""
+
 
   def listdb():
     """List db"""

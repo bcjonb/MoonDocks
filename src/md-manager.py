@@ -3,7 +3,7 @@
 
 import cmd
 import os
-# import shelve
+import shelve
 
 class MDManager(cmd.Cmd, object):
 
@@ -13,11 +13,14 @@ class MDManager(cmd.Cmd, object):
   nc='\033[0m'
 
   dbCache = []
-  dbDir = './db/'
+  dbPath = './db/'
+  database = None
+  dbData = None
   prompt = '''{gray}Moondocks Manager: {purple}{db}{nc}
-❯ '''.format(purple=purple, gray=gray, nc=nc, db=None)
+❯❯ '''.format(purple = purple, gray = gray, nc = nc, db = database)
 
   def __init__(self):
+    mdm = MDManager
     cmd.Cmd.__init__(self)
     self.ruler = '-'
     self.intro = '''
@@ -29,34 +32,138 @@ class MDManager(cmd.Cmd, object):
     - {purple}close{nc}:  Closes the current database
     - {purple}list{nc}:   Lists available databases
     - {purple}create{nc}: Creates a new database
-    - {purple}show{nc}:   Show the contents of a database
-    - {purple}insert{nc}: Insert's data into the database
-    - {purple}help{nc}:   Get help for a command
+    - {purple}find{nc}:   Display all documents
+    - {purple}help{nc}:   Display help
 
     *Note: Use tab to autocomplete commands.
 
-    '''.format(purple=MDManager.purple, nc=MDManager.nc)
+    '''.format(purple=mdm.purple, nc=mdm.nc)
 
   ## Database commands
 
+  def do_open(self, args):
+    '''Open an existing database'''
+    # TODO: add db autocompletion
+    if args and '.db' not in args: args = args + '.db'
+    MDManager.opendb(args)
+
+  def do_close(self, args):
+    '''Close an open database'''
+    md = MDManager
+    if args:
+      print('Too many arguments.')
+      return
+    md.closedb(md.database)
+
+  def do_list(self, args):
+    '''List databases'''
+    MDManager.listdb()
+
+  def do_find(self, args):
+    '''Display all documents'''
+    md = MDManager
+    if md.database is None:
+      print('No database open.')
+      md.opendb('')
+      return
+    elif not args:
+      _key = list(md.dbData.keys())
+      _val = list(md.dbData.values())
+      for i in range(len(_key)):
+        print('')
+        print(_key[i], '=', _val[i])
+    else:
+      print('Unknown command: %s' % (args))
+
   ## Core commands
+
+  def dbStatus(db):
+    '''Check if there is an open database'''
+    self = MDManager
+    if self.database is not None:
+      print('The database {purple}{db}{nc} is open.'.format(
+        purple = self.purple,
+        db = self.database,
+        nc = self.nc
+      ))
+      return True
+    else:
+      return False
 
   def updatedbCache():
     '''Update the list of available db'''
-    MDManager.dbCache = []
+    self = MDManager
+    self.dbCache = []
     for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
       for filename in filenames:
         MDManager.dbCache.append(filename)
 
-  def opendb():
-    """Open a database"""
+  def closedb(db):
+    '''Close an open database'''
+    self = MDManager
 
+    if not db:
+      db = self.database
+    askClose = input('\nWould you like to close it now? [y/n]: ').lower()
+    if askClose == 'y':
+      print('closing db...')
+    else:
+      return False
+
+    self.database = None
+    # shelve close db
+    if self.dbData is not None: self.dbData.close()
+    return True
+
+  def opendb(db):
+    '''Open a database'''
+    self = MDManager
+
+    # Check if there is an open db
+    if db == self.database: return
+    if self.dbStatus(db):
+      if self.closedb(db): pass
+      else: return
+    # Scrub data
+    if not db:
+      db = input('\nWhich database would you like to open?: ')
+      if db == 'list':
+        self.listdb()
+        self.opendb('')
+        return
+      elif not db: return
+    # Check for prexisting db
+    if '.db' not in db: db = db + '.db'
+    if db not in self.dbCache:
+      print('The database {purple}{db}{nc} doesn\'t exist.'.format(
+        purple = self.purple,
+        db = db,
+        nc = self.nc
+      ))
+      askCreate = input('\nWould you like to create it now? [y/n]: ').lower()
+      if askCreate == 'y':
+        print('creating db...')
+      else:
+        return
+
+    # Set current db
+    self.database = db
+    print('Opening database {purple}{db}{nc}'.format(
+      purple = self.purple,
+      db = self.dbPath + db,
+      nc = self.nc
+    ))
+
+    # shelve open db
+    self.dbData = shelve.open(self.dbPath + db, writeback=True)
+    print(self.dbData)
 
   def listdb():
-    """List db"""
+    '''List db'''
+    self = MDManager
     _index = 0
-    for dirname, dirnames, filenames in os.walk(MDManager.dbPath):
-      print('└── ' + os.path.basename(dirname))
+    for dirname, dirnames, filenames in os.walk(self.dbPath):
+      print('└── ' + self.dbPath)
       for filename in filenames:
         print('   └── '
               + '\033[95m'
@@ -69,6 +176,11 @@ Available database(s): {0}{1}{2} '''.format('\033[95m', _index, '\033[0m'))
 
   def do_exit(self, args):
     '''Exit MoonDocks db Manager'''
+    md = MDManager
+    if args:
+      print('Too many arguments.')
+      return
+    md.closedb(md.database)
     return -1
 
   def do_EOF(self, args):
@@ -97,10 +209,10 @@ Available database(s): {0}{1}{2} '''.format('\033[95m', _index, '\033[0m'))
 
   def postcmd(self, stop, line):
     '''Post command processing'''
+    md = MDManager
     print('') # adds an empty space
-    print('current db: ' + MDManager.database)
-    MDManager.prompt = 'MoonDocks Manager: {0}{1}{2} ❯ '.format(
-          '\033[95m', MDManager.currentDB(), '\033[0m')
+    md.prompt = '''{gray}Moondocks Manager: {purple}{db}{nc}
+❯❯ '''.format(purple = md.purple, gray = md.gray, nc = md.nc, db = md.database)
     return stop
 
   def preloop(self):

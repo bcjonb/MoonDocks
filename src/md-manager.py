@@ -14,7 +14,7 @@ class MDManager(cmd.Cmd, object):
 
   dbCache = []
   dbDir = './db/'
-  prompt = '''{gray}Moondocks db Manager: {purple}{db}{nc}
+  prompt = '''{gray}Moondocks Manager: {purple}{db}{nc}
 ❯ '''.format(purple=purple, gray=gray, nc=nc, db=None)
 
   def __init__(self):
@@ -99,7 +99,7 @@ Available database(s): {0}{1}{2} '''.format('\033[95m', _index, '\033[0m'))
     '''Post command processing'''
     print('') # adds an empty space
     print('current db: ' + MDManager.database)
-    MDManager.prompt = 'MoonDocks db Manager: {0}{1}{2} ❯ '.format(
+    MDManager.prompt = 'MoonDocks Manager: {0}{1}{2} ❯ '.format(
           '\033[95m', MDManager.currentDB(), '\033[0m')
     return stop
 
